@@ -89,7 +89,6 @@ class FermeServiceImplTest {
 
     @Test
     void getFermeById_NotFound() {
-
     long id = 1L;
     when(fermeRepository.findById(id)).thenReturn(Optional.empty());
     assertThrows(FermeNotFoundException.class, () -> fermeService.getFermeById(id));
