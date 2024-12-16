@@ -34,76 +34,91 @@ class FermeServiceImplTest {
 
     @Test
     void createFerme_Success() {
-        FermeRequestDto requestDto = new FermeRequestDto();
-         requestDto.setNom("Testt f erme");
-            requestDto.setLocalisation("casa");
-        requestDto.setSuperficie(100.0);
-      Ferme ferme = new Ferme();
-        ferme.setNom(requestDto.getNom());
-          ferme.setLocalisation(requestDto.getLocalisation());
-        ferme.setSuperficie(requestDto.getSuperficie());
-       when(modelMapper.map(requestDto, Ferme.class)).thenReturn(ferme);
-            when(fermeRepository.save(any(Ferme.class))).thenReturn(ferme);
-        when(modelMapper.map(ferme, FermeResponseDto.class)).thenReturn(new FermeResponseDto());
-          FermeResponseDto response = fermeService.createFerme(requestDto);
-        assertNotNull(response);
-        verify(fermeRepository, times(1)).save(any(Ferme.class));
+
+    FermeRequestDto requestDto = new FermeRequestDto();
+     requestDto.setNom("Testt f erme");
+     requestDto.setLocalisation("casa");
+     requestDto.setSuperficie(100.0);
+
+    Ferme ferme = new Ferme();
+    ferme.setNom(requestDto.getNom());
+    ferme.setLocalisation(requestDto.getLocalisation());
+    ferme.setSuperficie(requestDto.getSuperficie());
+
+    when(modelMapper.map(requestDto, Ferme.class)).thenReturn(ferme);
+    when(fermeRepository.save(any(Ferme.class))).thenReturn(ferme);
+    when(modelMapper.map(ferme, FermeResponseDto.class)).thenReturn(new FermeResponseDto());
+
+    FermeResponseDto response = fermeService.createFerme(requestDto);
+    assertNotNull(response);
+    verify(fermeRepository, times(1)).save(any(Ferme.class));
+
     }
 
     @Test
     void getAllFermes_Success() {
 
-          Ferme ferme = new Ferme();
-       Page<Ferme> fermes = new PageImpl<>(Collections.singletonList(ferme));
-        when(fermeRepository.findAll(any(Pageable.class))).thenReturn(fermes);
-            when(modelMapper.map(any(Ferme.class), eq(FermeResponseDto.class))).thenReturn(new FermeResponseDto());
-        Page<FermeResponseDto> response = fermeService.getAllFermes(0, 10);
-      assertNotNull(response);
-          assertEquals(1, response.getTotalElements());
-        verify(fermeRepository, times(1)).findAll(any(Pageable.class));
+    Ferme ferme = new Ferme();
+    Page<Ferme> fermes = new PageImpl<>(Collections.singletonList(ferme));
+
+    when(fermeRepository.findAll(any(Pageable.class))).thenReturn(fermes);
+    when(modelMapper.map(any(Ferme.class), eq(FermeResponseDto.class))).thenReturn(new FermeResponseDto());
+
+    Page<FermeResponseDto> response = fermeService.getAllFermes(0, 10);
+    assertNotNull(response);
+    assertEquals(1, response.getTotalElements());
+    verify(fermeRepository, times(1)).findAll(any(Pageable.class));
+
     }
 
     @Test
     void getFermeById_Success() {
 
-        long id = 1L;
-          Ferme ferme = new Ferme();
-             ferme.setId(id);
-        when(fermeRepository.findById(id)).thenReturn(Optional.of(ferme));
-          when(modelMapper.map(ferme, FermeResponseDto.class)).thenReturn(new FermeResponseDto());
-         FermeResponseDto response = fermeService.getFermeById(id);
-        assertNotNull(response);
-      verify(fermeRepository, times(1)).findById(id);
+//    long id = 1L;
+    Ferme ferme = new Ferme();
+    ferme.setId(1L);
+
+    when(fermeRepository.findById(0L)).thenReturn(Optional.of(ferme));
+    when(modelMapper.map(ferme, FermeResponseDto.class)).thenReturn(new FermeResponseDto());
+
+    FermeResponseDto response = fermeService.getFermeById(0);
+    assertNotNull(response);
+    verify(fermeRepository, times(1)).findById(0L);
+
     }
 
     @Test
     void getFermeById_NotFound() {
 
-        long id = 1L;
-         when(fermeRepository.findById(id)).thenReturn(Optional.empty());
-            assertThrows(FermeNotFoundException.class, () -> fermeService.getFermeById(id));
-          verify(fermeRepository, times(1)).findById(id);
+    long id = 1L;
+    when(fermeRepository.findById(id)).thenReturn(Optional.empty());
+    assertThrows(FermeNotFoundException.class, () -> fermeService.getFermeById(id));
+    verify(fermeRepository, times(1)).findById(id);
+
     }
 
     @Test
     void updateFerme_Success() {
 
-        long id = 1L;
-        FermeRequestDto requestDto = new FermeRequestDto();
-        requestDto.setNom("updatee Ferme");
-          requestDto.setLocalisation("settat");
-         requestDto.setSuperficie(200.0);
-            Ferme ferme = new Ferme();
-        ferme.setId(id);
-         when(fermeRepository.findById(id)).thenReturn(Optional.of(ferme));
-     when(fermeRepository.save(any(Ferme.class))).thenReturn(ferme);
-        when(modelMapper.map(ferme, FermeResponseDto.class)).thenReturn(new FermeResponseDto());
+    long id = 1L;
+    FermeRequestDto requestDto = new FermeRequestDto();
+    requestDto.setNom("updatee Ferme");
+    requestDto.setLocalisation("settat");
+    requestDto.setSuperficie(200.0);
 
-         FermeResponseDto response = fermeService.updateFerme(id, requestDto);
+    Ferme ferme = new Ferme();
+    ferme.setId(id);
 
-        assertNotNull(response);
-          verify(fermeRepository, times(1)).findById(id);
-        verify(fermeRepository, times(1)).save(any(Ferme.class));
+    when(fermeRepository.findById(id)).thenReturn(Optional.of(ferme));
+    when(fermeRepository.save(any(Ferme.class))).thenReturn(ferme);
+    when(modelMapper.map(ferme, FermeResponseDto.class)).thenReturn(new FermeResponseDto());
+
+    FermeResponseDto response = fermeService.updateFerme(id, requestDto);
+
+    assertNotNull(response);
+    verify(fermeRepository, times(1)).findById(id);
+    verify(fermeRepository, times(1)).save(any(Ferme.class));
+
     }
 
     @Test
