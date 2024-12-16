@@ -8,6 +8,7 @@ class CitronixApplicationTests {
 
 	@Test
 	void contextLoads() {
+
 	}
 
 }
