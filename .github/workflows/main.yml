@@ -7,10 +7,19 @@ on:
       - develop
 
 jobs:
-  build-deploy:
-    name: Build and Deploy Citronix app
+  checkout:
+    name: Checkout Code
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+    outputs:
+      repo_path: ${{ github.workspace }}
 
+  build:
+    name: Build Project
+    needs: checkout
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -25,6 +34,14 @@ jobs:
       - name: Build with Maven
         run: mvn clean package
 
+  deploy:
+    name: Deploy to Docker Hub
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
@@ -35,6 +52,6 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: Dockerfile 
+          file: Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/citronix:latest
