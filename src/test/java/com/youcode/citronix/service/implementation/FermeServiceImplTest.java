@@ -98,7 +98,6 @@ class FermeServiceImplTest {
 
     @Test
     void updateFerme_Success() {
-
     long id = 1L;
     FermeRequestDto requestDto = new FermeRequestDto();
     requestDto.setNom("updatee Ferme");
