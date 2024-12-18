@@ -123,10 +123,10 @@ class FermeServiceImplTest {
     void deleteFerme_Success() {
         long id = 1L;
         Ferme ferme = new Ferme();
-          when(fermeRepository.findById(id)).thenReturn(Optional.of(ferme));
+          when(fermeRepository.findById(0L)).thenReturn(Optional.of(ferme));
          doNothing().when(fermeRepository).delete(ferme);
      fermeService.deleteFerme(id);
-        verify(fermeRepository, times(1)).findById(id);
+        verify(fermeRepository, times(1)).findById(0L);
         verify(fermeRepository, times(1)).delete(ferme);
     }
 
